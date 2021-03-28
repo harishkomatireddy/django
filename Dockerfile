@@ -1,9 +1,15 @@
-FROM python:3.7-slim
+FROM python:3
+
 ENV PYTHONUNBUFFERED 1
+
+RUN mkdir /app
+
 WORKDIR /app
-EXPOSE 5000
-COPY requirements*.txt ./
+
+ADD . /app
+
+COPY ./requirements*.txt /app/requirements.txt
+
 RUN pip install -r requirements.txt
-COPY . .
-CMD ["python", "manage.py", "collectstatic"]
-CMD ["gunicorn", "-b", ":5000", "--log-level", "info", "config.wsgi:application"]
+
+COPY . /app
